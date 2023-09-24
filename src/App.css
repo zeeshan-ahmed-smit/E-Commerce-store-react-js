@@ -1,38 +1,76 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 1px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  width: 100%;
+  height: auto;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.btns {
   display: flex;
-  flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.viewDetailBtn {
+  border: none;
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 3px;
+  color: #000000;
+  cursor: pointer;
+  border: 1px solid #2e7d32;
+  transition: all 0.3s;
+  background: transparent;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.viewDetailBtn:hover {
+  background: #2e7d32;
+  color: #ffffff;
+}
+
+.addToCartBtn {
+  background: #29922e;
+  border: none;
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 3px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.addToCartBtn:hover {
+  background: #2e7d32;
+}
+
+.container {
+  padding: 40px 40px;
+}
+
+.box-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.product-box {
+  width: 300px !important;
+  margin-top: 10px !important;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;
+  padding: 10px !important;
+}
+
+.product-card-img img {
+  height: 200px;
+  width: 100%;
+  object-fit: contain;
 }
