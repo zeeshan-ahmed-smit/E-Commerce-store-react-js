@@ -53,7 +53,7 @@ body {
 }
 
 .container {
-  padding: 40px 40px;
+  padding: 80px 40px;
 }
 
 .box-container {
@@ -64,7 +64,7 @@ body {
 
 .product-box {
   width: 300px !important;
-  margin-top: 10px !important;
+  margin-bottom: 50px !important;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;
   padding: 10px !important;
 }
