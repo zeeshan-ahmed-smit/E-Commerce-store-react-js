@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -14,27 +14,47 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { useSearchParams } from "react-router-dom";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Badge from '@mui/material/Badge';
+import CartContext from '../context/cart';
+import CartDrawer from './CartDrawer';
 
 const drawerWidth = 240;
-const navItems = ['Home', 'About', 'Contact'];
+const navItems = ['all', "men's clothing", "women's clothing", 'electronics', 'jewelery'];
 
 function DrawerAppBar(props) {
     const { window } = props;
-    const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
+    let [setSearchParams] = useSearchParams();
+    const [open, setOpen] = useState(false);
+    const { cart, setCart } = useContext(CartContext)
+
+
 
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
+
+    };
+
+
+    const deleteCart = (id) => {
+        const cartData = JSON.parse(localStorage.getItem('cart')) || [];
+        const index = cartData.findIndex(v => v.id === id);
+        cartData.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cartData));
+        setCart(cartData)
     };
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
             <Typography variant="h6" sx={{ my: 2 }}>
-                MUI
+                My_Store
             </Typography>
             <Divider />
             <List>
                 {navItems.map((item) => (
-                    <ListItem key={item} disablePadding>
+                    <ListItem onClick={() => setSearchParams({ category: item })} key={item} disablePadding>
                         <ListItemButton sx={{ textAlign: 'center' }}>
                             <ListItemText primary={item} />
                         </ListItemButton>
@@ -49,7 +69,7 @@ function DrawerAppBar(props) {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar style={{backgroundColor: '#2e7d32'}} component="nav">
+            <AppBar style={{ backgroundColor: '#1976d2' }} component="nav">
                 <Toolbar>
                     <IconButton
                         color="inherit"
@@ -67,13 +87,25 @@ function DrawerAppBar(props) {
                     >
                         My_Store
                     </Typography>
-                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                    <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
                         {navItems.map((item) => (
-                            <Button key={item} sx={{ color: '#fff' }}>
+                            <Button onClick={() => setSearchParams({ category: item })} key={item} sx={{ color: '#fff' }}>
                                 {item}
                             </Button>
                         ))}
                     </Box>
+                    <Box sx={{ display: { sm: 'block' } }}>
+                        <IconButton
+                            size="large"
+                            aria-label="show 17 new notifications"
+                            color="inherit"
+                        >
+                            <Badge badgeContent={cart.length} color="error">
+                                <ShoppingCartIcon onClick={() => { setOpen(true) }} />
+                            </Badge>
+                        </IconButton>
+                    </Box>
+                    <CartDrawer deleteCart={deleteCart} cartData={cart} open={open} setOpen={setOpen} />
                 </Toolbar>
             </AppBar>
             <nav>
@@ -101,10 +133,6 @@ function DrawerAppBar(props) {
 }
 
 DrawerAppBar.propTypes = {
-    /**
-     * Injected by the documentation to work in an iframe.
-     * You won't need it on your project.
-     */
     window: PropTypes.func,
 };
 

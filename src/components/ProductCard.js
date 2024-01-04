@@ -1,18 +1,47 @@
-import * as React from 'react';
+import React, { useContext, useState } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import ReactStars from 'react-stars';
 import "../App.css";
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import CartContext from '../context/cart';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
-export default function ProductCard({ product, setOpen }) {
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
-    
+export default function ProductCard({ product, viewDetails }) {
+    const { setCart } = useContext(CartContext)
+    const [open, setOpen] = useState(false);
+
+    const addToCart = () => {
+        const cartData = JSON.parse(localStorage.getItem('cart')) || [];
+        const index = cartData.findIndex(v => v.id === product.id);
+        if (index !== -1) {
+            cartData.splice(index, 1, { ...cartData[index], qty: cartData[index].qty + 1 });
+        } else {
+            cartData.push({ ...product, qty: 1 });
+        }
+        localStorage.setItem('cart', JSON.stringify(cartData));
+        setCart(cartData)
+        setOpen(true);
+    }
+
+
     return (
         <Card className='product-box'>
             <div className="product-card-img">
                 <img src={product.image} alt='sd' />
             </div>
+            <Snackbar open={open} autoHideDuration={2000} onClose={() => { setOpen(false) }}>
+                <Alert onClose={() => { setOpen(false) }} severity="success" sx={{ width: '100%', boxShadow: 0 }}>
+                    Product add successfully:
+                </Alert>
+            </Snackbar>
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                     {product.title.slice(0, 18)}...
@@ -30,10 +59,10 @@ export default function ProductCard({ product, setOpen }) {
                     size={24}
                     color2={'#ffd700'} />
             </CardContent>
-            <div className='btns'>
-                <button className='addToCartBtn'>Add To Cart</button>
-                <button className='viewDetailBtn' onClick={() => { setOpen(true) }}>View Details</button>
-            </div>
+            <Stack spacing={2} direction="row">
+                <Button variant="contained" onClick={() => { addToCart() }}>Add to Cart</Button>
+                <Button variant="outlined" onClick={() => { viewDetails(product.id) }}>View Details</Button>
+            </Stack>
         </Card >
     );
 }
