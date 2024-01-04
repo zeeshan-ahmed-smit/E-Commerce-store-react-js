@@ -18,7 +18,12 @@ export default function DetailsCard({ details }) {
 
     const addToCart = () => {
         const cartData = JSON.parse(localStorage.getItem('cart')) || [];
-        cartData.push({ ...details, qty: 1 });
+        const index = cartData.findIndex(v => v.id === details.id);
+        if (index !== -1) {
+            cartData.splice(index, 1, { ...cartData[index], qty: cartData[index].qty + 1 });
+        } else {
+            cartData.push({ ...details, qty: 1 });
+        }
         localStorage.setItem('cart', JSON.stringify(cartData));
         setCart(cartData)
     }
