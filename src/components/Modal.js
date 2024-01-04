@@ -16,11 +16,8 @@ const style = {
     p: 4,
 };
 
-export default function BasicModal(open ,setOpen) {
-    // const [open, setOpen] = React.useState(true);
-    // const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
+export default function BasicModal(handleClose,open) {
+    console.log("🚀 ~ file: Modal.js:19 ~ BasicModal ~ handleClose:", handleClose)
     return (
         <div>
             {/* <Button onClick={handleOpen}>Open modal</Button> */}
