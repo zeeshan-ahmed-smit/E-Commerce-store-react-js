@@ -26,7 +26,7 @@ const navItems = ['all', "men's clothing", "women's clothing", 'electronics', 'j
 function DrawerAppBar(props) {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
-    let [setSearchParams] = useSearchParams();
+    let [searchParams,setSearchParams] = useSearchParams();
     const [open, setOpen] = useState(false);
     const { cart, setCart } = useContext(CartContext)
 
